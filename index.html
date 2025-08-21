@@ -4,54 +4,32 @@
   <meta charset="UTF-8">
   <title>Magic Real Lockscreen</title>
   <meta name="viewport" content="width=320, initial-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#16171a"/>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:500,400&display=swap" rel="stylesheet">
+  <!-- Manifest for PWA -->
   <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#16171a">
+  <link rel="icon" type="image/png" href="icon-192.png">
   <style>
-    @font-face {
-      font-family: 'Roboto';
-      font-style: normal;
-      font-weight: 400;
-      src: local('Roboto'), url('data:font/woff2;base64,d09GMgABAAAAAAm...') format('woff2'); /* Use your base64 Roboto woff2 here */
-    }
-    @font-face {
-      font-family: 'Roboto';
-      font-style: normal;
-      font-weight: 500;
-      src: local('Roboto'), url('data:font/woff2;base64,d09GMgABAAAAAAm...') format('woff2'); /* Use your base64 Roboto woff2 here */
-    }
+    /* ... (aapka pura CSS yahan as-is rahega) ... */
     body {
       margin: 0;
       height: 100vh;
       width: 100vw;
       font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
       overflow: hidden;
-      background: #16171a;
-      background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...'); /* Place your bg image base64 here */
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80') center center / cover no-repeat;
+      background-color: #16171a;
     }
-    /* All your previous CSS remains unchanged */
-    /* ... (rest of your CSS as in your provided code) ... */
-    /* Replace all icon URLs with embedded SVGs below */
-    .icon-img, .settings-icon {
-      width: 54px; height: 54px;
-      display: block;
-    }
-    .settings-icon { width: 34px; height: 34px;}
-    @media (max-width: 500px) {
-      .icon-img { width: 32px; height: 32px;}
-      .settings-icon { width: 20px; height: 20px;}
-    }
+    /* baaki CSS as-is */
+    /* ... */
   </style>
 </head>
 <body>
+  <!-- Black dot indicator (left side) -->
   <div class="save-indicator-dot" id="saveDot"></div>
+  <!-- Settings button for minute control -->
   <div class="settings-btn" id="settingsBtn" title="Minute select karein">
-    <span class="settings-icon">
-      <!-- Embedded gear SVG -->
-      <svg viewBox="0 0 24 24" fill="white"><path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7zm7.43-4.7c.04-.3.07-.61.07-.8s-.03-.5-.07-.8l2.11-1.65a.5.5 0 0 0 .12-.65l-2-3.46a.5.5 0 0 0-.6-.22l-2.49 1a7.03 7.03 0 0 0-1.4-.8l-.38-2.65A.488.488 0 0 0 14 2h-4a.5.5 0 0 0-.5.42l-.38 2.65c-.5.2-.96.48-1.4.8l-2.49-1a.5.5 0 0 0-.6.22l-2 3.46a.5.5 0 0 0 .12.65l2.11 1.65c-.04.3-.07.61-.07.8s.03.5.07.8L2.57 12.15a.5.5 0 0 0-.12.65l2 3.46c.14.24.44.31.65.22l2.49-1c.44.32.91.6 1.4.8l.38 2.65c.05.25.25.42.5.42h4c.25 0 .45-.17.5-.42l.38-2.65c.5-.2.96-.48 1.4-.8l2.49 1c.21.09.51.02.65-.22l2-3.46a.5.5 0 0 0-.12-.65l-2.11-1.65z"></path></svg>
-    </span>
+    <img class="settings-icon" src="https://cdn-icons-png.flaticon.com/512/2099/2099058.png"/>
   </div>
   <div class="settings-popup" id="settingsPopup" style="display:none;">
     <span style="font-size:1.15rem;">Minute select karein (1-10):</span>
@@ -70,35 +48,138 @@
   </div>
   <div class="bottom-icons">
     <div class="icon-btn icon-home" title="Home">
-      <span class="icon-img">
-        <!-- Home SVG -->
-        <svg viewBox="0 0 24 24" fill="white"><path d="M12 3l9 9-1.4 1.4L18 12.4V20a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1v-7.6l-1.6 1.6L3 12l9-9z"></path></svg>
-      </span>
+      <img class="icon-img" src="https://cdn-icons-png.flaticon.com/512/25/25694.png"/>
     </div>
     <div class="icon-btn icon-lock" title="Locked">
-      <span class="icon-img">
-        <!-- Lock SVG -->
-        <svg viewBox="0 0 24 24" fill="white"><path d="M12 17a2 2 0 0 0 2-2v-2a2 2 0 1 0-4 0v2a2 2 0 0 0 2 2zm6-7V8a6 6 0 1 0-12 0v2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-8-2a4 4 0 1 1 8 0v2H8V8z"></path></svg>
-      </span>
+      <img class="icon-img" src="https://cdn-icons-png.flaticon.com/512/2889/2889676.png"/>
     </div>
     <div class="icon-btn icon-qr" id="qrBtn" title="QR Code">
-      <span class="icon-img">
-        <!-- QR SVG -->
-        <svg viewBox="0 0 24 24" fill="white"><rect x="3" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><path d="M14 14h3v3h-3z"/><path d="M18 18h3v3h-3z"/></svg>
-      </span>
+      <img class="icon-img" src="https://cdn-icons-png.flaticon.com/512/929/929426.png"/>
     </div>
   </div>
   <div class="swipe-text">Swipe to unlock</div>
   <script>
-    // All your original script remains unchanged
-    // (Copy-paste your JavaScript as in the original file)
-    // ...
-  </script>
-  <script>
-    // Register service worker for offline support
+    // Service worker registration for PWA/offline
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js');
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('sw.js');
+      });
     }
+
+    function pad(n){ return n.toString().padStart(2,'0'); }
+    let timeOffsetMinutes = 0;
+    let animating = false;
+    let swipeDelayTimer = null;
+
+    function updateClock() {
+      const now = new Date();
+      let showTime = new Date(now.getTime() + timeOffsetMinutes * 60000);
+      let hours24 = showTime.getHours();
+      let h = hours24 % 12 || 12; // 12-hour format
+      let m = pad(showTime.getMinutes());
+      document.getElementById('clockHour').textContent = pad(h);
+      document.getElementById('clockMinute').textContent = m;
+      const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+      let d = days[showTime.getDay()];
+      let dateStr = `${d}, ${showTime.getDate()} ${showTime.toLocaleString('default', {month:'short'})}`;
+      document.getElementById('date').textContent = dateStr;
+      document.getElementById('weather').textContent = '☁️ 31°';
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Settings popup logic
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsPopup = document.getElementById('settingsPopup');
+    const minuteInput = document.getElementById('minuteInput');
+    const okBtn = document.getElementById('okBtn');
+    const saveDot = document.getElementById('saveDot');
+
+    settingsBtn.onclick = function(e) {
+      settingsPopup.style.display = (settingsPopup.style.display === "none") ? "flex" : "none";
+      e.stopPropagation();
+    };
+    okBtn.onclick = function() {
+      let target = parseInt(minuteInput.value);
+      if(isNaN(target) || target < 1 || target > 10) return;
+      settingsPopup.style.display = "none";
+      if(!animating) {
+        let start = timeOffsetMinutes;
+        let end = target;
+        let step = end > start ? 1 : -1;
+        animating = true;
+        function animate() {
+          if(start !== end) {
+            start += step;
+            timeOffsetMinutes = start;
+            updateClock();
+            setTimeout(animate, 500);
+          } else {
+            animating = false;
+            showSaveDot();
+          }
+        }
+        animate();
+      }
+    };
+    function showSaveDot() {
+      saveDot.classList.add('active');
+    }
+    function hideSaveDot() {
+      saveDot.classList.remove('active');
+    }
+    document.addEventListener('click', function(e) {
+      if(!settingsPopup.contains(e.target) && !settingsBtn.contains(e.target)) {
+        settingsPopup.style.display = "none";
+      }
+    });
+
+    // Swipe logic (touch)
+    let swipeStartX = null, swipeStartY = null;
+    document.body.addEventListener('touchstart', function(e) {
+      if(e.touches.length === 1) {
+        swipeStartX = e.touches[0].clientX;
+        swipeStartY = e.touches[0].clientY;
+      }
+    });
+    document.body.addEventListener('touchend', function(e) {
+      if(swipeStartX === null || swipeStartY === null) return;
+      let swipeEndX = e.changedTouches[0].clientX;
+      let swipeEndY = e.changedTouches[0].clientY;
+      let dx = swipeEndX - swipeStartX;
+      let dy = swipeEndY - swipeStartY;
+      if(Math.abs(dx) > 30 || Math.abs(dy) > 30) {
+        if(!animating && timeOffsetMinutes !== 0 && !swipeDelayTimer) {
+          let delaySec = 4 + Math.random();
+          swipeDelayTimer = setTimeout(()=>{
+            let start = timeOffsetMinutes;
+            let end = 0;
+            let step = (start > end) ? -1 : 1;
+            animating = true;
+            function animateBack() {
+              if(start !== end) {
+                start += step;
+                timeOffsetMinutes = start;
+                updateClock();
+                setTimeout(animateBack, 500);
+              } else {
+                animating = false;
+                swipeDelayTimer = null;
+                hideSaveDot();
+              }
+            }
+            animateBack();
+          }, delaySec * 1000);
+        }
+      }
+      swipeStartX = null;
+      swipeStartY = null;
+    });
+
+    // QR icon click (demo)
+    document.getElementById('qrBtn').onclick = function(){
+      alert('QR Code action!');
+    };
   </script>
 </body>
 </html>
