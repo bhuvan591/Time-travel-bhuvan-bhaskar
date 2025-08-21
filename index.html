@@ -4,32 +4,8 @@
   <meta charset="UTF-8">
   <title>Magic Real Lockscreen</title>
   <meta name="viewport" content="width=320, initial-scale=1.0, user-scalable=no">
-
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:500,400&display=swap" rel="stylesheet">
-
-  <!-- Manifest (inline as JSON blob) -->
-  <link rel="manifest" href="data:application/manifest+json,{
-    &quot;name&quot;:&quot;Magic Real Lockscreen&quot;,
-    &quot;short_name&quot;:&quot;Lockscreen&quot;,
-    &quot;start_url&quot;:&quot;index.html&quot;,
-    &quot;display&quot;:&quot;fullscreen&quot;,
-    &quot;background_color&quot;:&quot;#16171a&quot;,
-    &quot;theme_color&quot;:&quot;#16171a&quot;,
-    &quot;orientation&quot;:&quot;portrait&quot;,
-    &quot;icons&quot;:[
-      {&quot;src&quot;:&quot;https://cdn-icons-png.flaticon.com/512/2889/2889676.png&quot;,&quot;sizes&quot;:&quot;192x192&quot;,&quot;type&quot;:&quot;image/png&quot;},
-      {&quot;src&quot;:&quot;https://cdn-icons-png.flaticon.com/512/2889/2889676.png&quot;,&quot;sizes&quot;:&quot;512x512&quot;,&quot;type&quot;:&quot;image/png&quot;}
-    ]
-  }">
-
-  <!-- iOS support -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Magic Lockscreen">
-
   <style>
-    /* तुम्हारा पूरा original CSS same रहेगा (unchanged) */
     body {
       margin: 0;
       height: 100vh;
@@ -73,7 +49,7 @@
       margin: 0;
       padding: 0;
     }
-    .clock-hour { margin-bottom: 2vw; margin-top: 0vw; }
+    .clock-hour { margin-bottom: 2vw; }
     .clock-minute { margin-top: 1vw; }
     .date-weather-row {
       margin-top: 1vw;
@@ -112,13 +88,7 @@
       transition: background 0.2s;
     }
     .icon-btn:active { background: #ffffff22; }
-    .icon-img {
-      width: 54px; height: 54px;
-      filter: invert(100%);
-    }
-    .icon-home { margin-right: auto; }
-    .icon-lock { margin: 0 auto; }
-    .icon-qr { margin-left: auto; }
+    .icon-img { width: 54px; height: 54px; filter: invert(100%); }
     .swipe-text {
       position: absolute;
       bottom: 45px;
@@ -133,17 +103,87 @@
       user-select: none;
       text-shadow: 0 2px 16px #0009;
     }
-    /* Settings styles (unchanged) */
-    .settings-btn { position: absolute; top: 24px; right: 24px; background: rgba(255,255,255,0.19); border-radius: 50%; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 20; transition: background 0.2s; box-shadow: 0 2px 12px #0005; }
+    /* Settings styles */
+    .settings-btn {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: rgba(255,255,255,0.19);
+      border-radius: 50%;
+      width: 52px; height: 52px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      z-index: 20;
+      transition: background 0.2s;
+      box-shadow: 0 2px 12px #0005;
+    }
     .settings-btn:active { background: #fff; }
     .settings-icon { width: 34px; height: 34px; filter: invert(100%) drop-shadow(0 0 3px #2228); }
-    .settings-popup { position: absolute; top: 84px; right: 22px; background: #202d44ee; color: #fff; border-radius: 18px; box-shadow: 0 4px 18px #000b; padding: 16px 24px; z-index: 99; animation: fadeIn 0.23s; display: flex; flex-direction: column; gap: 10px; }
-    .settings-popup input[type=number] { width: 54px; padding: 7px; font-size: 1.3rem; border-radius: 7px; border: 1px solid #3b476d; margin-right: 12px; outline: none; }
-    .settings-popup button { background: #3b476d; color: #fff; font-size: 1.15rem; border: none; border-radius: 8px; padding: 10px 26px; margin: 0; cursor: pointer; margin-bottom: 2px; transition: background 0.17s; }
-    .settings-popup button:hover { background: #fff; color: #222d44; }
-    .save-indicator-dot { position: absolute; top: 16px; left: 20px; width: 20px; height: 20px; border-radius: 50%; background: #222b; box-shadow: 0 0 0 2px #2228; pointer-events: none; z-index: 99; opacity: 0; transition: opacity 0.23s; }
+    .settings-popup {
+      position: absolute;
+      top: 84px; right: 22px;
+      background: #202d44ee;
+      color: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 18px #000b;
+      padding: 16px 24px;
+      z-index: 99;
+      animation: fadeIn 0.23s;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .settings-popup input[type=number] {
+      width: 54px;
+      padding: 7px;
+      font-size: 1.3rem;
+      border-radius: 7px;
+      border: 1px solid #3b476d;
+      margin-right: 12px;
+      outline: none;
+    }
+    .settings-popup button {
+      background: #3b476d;
+      color: #fff;
+      font-size: 1.15rem;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 26px;
+      cursor: pointer;
+      transition: background 0.17s;
+    }
+    .settings-popup button:hover {
+      background: #fff; color: #222d44;
+    }
+    .save-indicator-dot {
+      position: absolute;
+      top: 16px; left: 20px;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: #222b;
+      box-shadow: 0 0 0 2px #2228;
+      pointer-events: none;
+      z-index: 99;
+      opacity: 0;
+      transition: opacity 0.23s;
+    }
     .save-indicator-dot.active { opacity: 1; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px);} to { opacity: 1; transform: translateY(0);} }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    @media (max-width: 500px) {
+      .clock-hour, .clock-minute { font-size: 4.7rem; letter-spacing: 0.6rem;}
+      .date-weather-row { font-size: 1.7rem; gap: 11px;}
+      .icon-btn { width: 54px; height: 54px;}
+      .icon-img { width: 32px; height: 32px;}
+      .bottom-icons { gap: 32px; bottom: 22px; }
+      .swipe-text { font-size: 1.1rem; bottom: 7px;}
+      .settings-btn { width: 32px; height: 32px; top: 8px; right: 8px; }
+      .settings-icon { width: 20px; height: 20px;}
+      .settings-popup { top: 42px; right: 9px; padding: 10px 12px;}
+      .save-indicator-dot { width: 10px; height: 10px; top: 8px; left: 7px;}
+    }
   </style>
 </head>
 <body>
@@ -156,6 +196,7 @@
     <input type="number" min="1" max="10" id="minuteInput" value="1"/>
     <button id="okBtn">OK</button>
   </div>
+
   <div class="lockscreen-container">
     <div class="clock-block">
       <div class="clock-hour" id="clockHour">01</div>
@@ -166,37 +207,83 @@
       <span id="weather">☁️ 31°</span>
     </div>
   </div>
+
   <div class="bottom-icons">
-    <div class="icon-btn icon-home" title="Home">
+    <div class="icon-btn" title="Home">
       <img class="icon-img" src="https://cdn-icons-png.flaticon.com/512/25/25694.png"/>
     </div>
-    <div class="icon-btn icon-lock" title="Locked">
+    <div class="icon-btn" title="Locked">
       <img class="icon-img" src="https://cdn-icons-png.flaticon.com/512/2889/2889676.png"/>
     </div>
-    <div class="icon-btn icon-qr" id="qrBtn" title="QR Code">
+    <div class="icon-btn" id="qrBtn" title="QR Code">
       <img class="icon-img" src="https://cdn-icons-png.flaticon.com/512/929/929426.png"/>
     </div>
   </div>
+
   <div class="swipe-text">Swipe to unlock</div>
 
   <script>
-    // Same JS (unchanged)
     function pad(n){ return n.toString().padStart(2,'0'); }
-    let timeOffsetMinutes = 0; let animating = false; let swipeDelayTimer = null;
-    function updateClock() { const now = new Date(); let showTime = new Date(now.getTime() + timeOffsetMinutes * 60000); let hours24 = showTime.getHours(); let h = hours24 % 12 || 12; let m = pad(showTime.getMinutes()); document.getElementById('clockHour').textContent = pad(h); document.getElementById('clockMinute').textContent = m; const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]; let d = days[showTime.getDay()]; let dateStr = `${d}, ${showTime.getDate()} ${showTime.toLocaleString('default',{month:'short'})}`; document.getElementById('date').textContent = dateStr; document.getElementById('weather').textContent = '☁️ 31°'; }
-    setInterval(updateClock, 1000); updateClock();
+    let timeOffsetMinutes = 0, animating = false, swipeDelayTimer = null;
 
-    const settingsBtn = document.getElementById('settingsBtn'); const settingsPopup = document.getElementById('settingsPopup'); const minuteInput = document.getElementById('minuteInput'); const okBtn = document.getElementById('okBtn'); const saveDot = document.getElementById('saveDot');
-    settingsBtn.onclick = e=>{ settingsPopup.style.display = (settingsPopup.style.display==="none")?"flex":"none"; e.stopPropagation(); };
-    okBtn.onclick = ()=>{ let target = parseInt(minuteInput.value); if(isNaN(target)||target<1||target>10)return; settingsPopup.style.display="none"; if(!animating){ let start=timeOffsetMinutes,end=target,step=end>start?1:-1; animating=true; function animate(){ if(start!==end){ start+=step; timeOffsetMinutes=start; updateClock(); setTimeout(animate,500);} else{ animating=false; saveDot.classList.add('active'); } } animate(); }};
-    document.addEventListener('click',e=>{ if(!settingsPopup.contains(e.target)&&!settingsBtn.contains(e.target)) settingsPopup.style.display="none"; });
+    function updateClock() {
+      const now = new Date();
+      let showTime = new Date(now.getTime() + timeOffsetMinutes * 60000);
+      let hours24 = showTime.getHours();
+      let h = hours24 % 12 || 12;
+      let m = pad(showTime.getMinutes());
+      document.getElementById('clockHour').textContent = pad(h);
+      document.getElementById('clockMinute').textContent = m;
+      const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+      let d = days[showTime.getDay()];
+      let dateStr = `${d}, ${showTime.getDate()} ${showTime.toLocaleString('default', {month:'short'})}`;
+      document.getElementById('date').textContent = dateStr;
+      document.getElementById('weather').textContent = '☁️ 31°';
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
 
-    let swipeStartX=null,swipeStartY=null; document.body.addEventListener('touchstart',e=>{ if(e.touches.length===1){ swipeStartX=e.touches[0].clientX; swipeStartY=e.touches[0].clientY; }}); document.body.addEventListener('touchend',e=>{ if(swipeStartX===null||swipeStartY===null)return; let swipeEndX=e.changedTouches[0].clientX; let swipeEndY=e.changedTouches[0].clientY; let dx=swipeEndX-swipeStartX; let dy=swipeEndY-swipeStartY; if(Math.abs(dx)>30||Math.abs(dy)>30){ if(!animating&&timeOffsetMinutes!==0&&!swipeDelayTimer){ let delaySec=4+Math.random(); swipeDelayTimer=setTimeout(()=>{ let start=timeOffsetMinutes,end=0,step=(start>end)?-1:1; animating=true; function animateBack(){ if(start!==end){ start+=step; timeOffsetMinutes=start; updateClock(); setTimeout(animateBack,500);} else{ animating=false; swipeDelayTimer=null; saveDot.classList.remove('active'); } } animateBack(); },delaySec*1000); } } swipeStartX=null; swipeStartY=null; });
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsPopup = document.getElementById('settingsPopup');
+    const minuteInput = document.getElementById('minuteInput');
+    const okBtn = document.getElementById('okBtn');
+    const saveDot = document.getElementById('saveDot');
 
-    document.getElementById('qrBtn').onclick=()=>{ alert('QR Code action!'); };
+    settingsBtn.onclick = e => {
+      settingsPopup.style.display = (settingsPopup.style.display === "none") ? "flex" : "none";
+      e.stopPropagation();
+    };
+    okBtn.onclick = () => {
+      let target = parseInt(minuteInput.value);
+      if(isNaN(target) || target < 1 || target > 10) return;
+      settingsPopup.style.display = "none";
+      if(!animating) {
+        let start = timeOffsetMinutes, end = target, step = end > start ? 1 : -1;
+        animating = true;
+        function animate() {
+          if(start !== end) {
+            start += step; timeOffsetMinutes = start; updateClock();
+            setTimeout(animate, 500);
+          } else { animating = false; saveDot.classList.add('active'); }
+        }
+        animate();
+      }
+    };
+    document.addEventListener('click', e => {
+      if(!settingsPopup.contains(e.target) && !settingsBtn.contains(e.target)) {
+        settingsPopup.style.display = "none";
+      }
+    });
 
-    // Inline Service Worker
-    if("serviceWorker" in navigator){ const swCode=`self.addEventListener('install',e=>{e.waitUntil(caches.open('lockscreen-cache-v1').then(c=>c.addAll(['./'])));});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));});`; const blob=new Blob([swCode],{type:'application/javascript'}); const swUrl=URL.createObjectURL(blob); navigator.serviceWorker.register(swUrl).then(()=>console.log("✅ Service Worker Registered")).catch(err=>console.log("❌ SW fail:",err)); }
-  </script>
-</body>
-</html>
+    let swipeStartX=null, swipeStartY=null;
+    document.body.addEventListener('touchstart', e => {
+      if(e.touches.length === 1) {
+        swipeStartX = e.touches[0].clientX;
+        swipeStartY = e.touches[0].clientY;
+      }
+    });
+    document.body.addEventListener('touchend', e => {
+      if(swipeStartX===null || swipeStartY===null) return;
+      let dx = e.changedTouches[0].clientX - swipeStartX;
+      let dy = e.changedTouches[0].clientY - swipeStartY;
+      if(Math.abs(dx)>30 || Math.abs(dy)>30
