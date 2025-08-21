@@ -1,12 +1,10 @@
 {
   "name": "Magic Real Lockscreen",
   "short_name": "Lockscreen",
-  "start_url": "/time-travel-bhuvan-bhaskar/index.html",
-  "scope": "/time-travel-bhuvan-bhaskar/",
+  "start_url": "magic_real_lockscreen_superbig_time_blacktext_intex.html",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
-  "orientation": "portrait",
+  "background_color": "#16171a",
+  "theme_color": "#16171a",
   "icons": [
     {
       "src": "icon-192.png",
