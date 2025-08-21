@@ -1,12 +1,12 @@
 {
   "name": "Magic Real Lockscreen",
   "short_name": "Lockscreen",
-  "start_url": "./?source=pwa",
+  "start_url": "./",
   "scope": "./",
-  "display": "fullscreen",
+  "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
-  "orientation": "portrait",
   "icons": [
     {
       "src": "/icons/icon-192.png",
