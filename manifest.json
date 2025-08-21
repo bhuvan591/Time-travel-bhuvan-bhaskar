@@ -1,8 +1,8 @@
 {
   "name": "Magic Real Lockscreen",
   "short_name": "Lockscreen",
-  "start_url": "/YOUR-REPO-NAME/index.html",
-  "scope": "/YOUR-REPO-NAME/",
+  "start_url": "/time-travel-bhuvan-bhaskar/index.html",
+  "scope": "/time-travel-bhuvan-bhaskar/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
