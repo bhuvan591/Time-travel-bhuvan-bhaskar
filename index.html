@@ -5,29 +5,23 @@
   <title>Magic Real Lockscreen</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
-  <!-- PWA: full screen + theme -->
+  <!-- PWA basics -->
   <meta name="theme-color" content="#0a84ff" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Lockscreen" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
 
-  <!-- Manifest -->
   <link rel="manifest" href="manifest.json" />
 
-  <!-- (Optional) Splash for iOS—use your 512 as fallback -->
-  <link rel="apple-touch-startup-image" href="icons/icon-512.png" />
-
-  <link href="https://fonts.googleapis.com/css?family=Roboto:500,400&display=swap" rel="stylesheet" />
   <style>
-    /* --- your existing CSS (unchanged) --- */
     body {
       margin: 0;
       height: 100vh;
       width: 100vw;
       font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
       overflow: hidden;
-      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80') center center / cover no-repeat;
+      background: url('./images/bg.jpg') center center / cover no-repeat; /* ✅ local image */
       background-color: #16171a;
     }
     .lockscreen-container { position: absolute; top: 7vw; left: 50%; transform: translateX(-50%); width: 100vw; text-align: center; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
@@ -71,7 +65,6 @@
   </style>
 </head>
 <body>
-  <!-- existing HTML from your page -->
   <div class="save-indicator-dot" id="saveDot"></div>
   <div class="settings-btn" id="settingsBtn" title="Minute select karein">
     <img class="settings-icon" src="https://cdn-icons-png.flaticon.com/512/2099/2099058.png" />
@@ -105,7 +98,6 @@
   <div class="swipe-text">Swipe to unlock</div>
 
   <script>
-    // --- your existing JS (unchanged) ---
     function pad(n){ return n.toString().padStart(2,'0'); }
     let timeOffsetMinutes = 0;
     let animating = false;
@@ -115,107 +107,4 @@
       const now = new Date();
       let showTime = new Date(now.getTime() + timeOffsetMinutes * 60000);
       let hours24 = showTime.getHours();
-      let h = hours24 % 12 || 12; // 12-hour format
-      let m = pad(showTime.getMinutes());
-      document.getElementById('clockHour').textContent = pad(h);
-      document.getElementById('clockMinute').textContent = m;
-      const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-      let d = days[showTime.getDay()];
-      let dateStr = `${d}, ${showTime.getDate()} ${showTime.toLocaleString('default', {month:'short'})}`;
-      document.getElementById('date').textContent = dateStr;
-      document.getElementById('weather').textContent = '☁️ 31°';
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    const settingsBtn = document.getElementById('settingsBtn');
-    const settingsPopup = document.getElementById('settingsPopup');
-    const minuteInput = document.getElementById('minuteInput');
-    const okBtn = document.getElementById('okBtn');
-    const saveDot = document.getElementById('saveDot');
-
-    settingsBtn.onclick = function(e) {
-      settingsPopup.style.display = (settingsPopup.style.display === "none") ? "flex" : "none";
-      e.stopPropagation();
-    };
-    okBtn.onclick = function() {
-      let target = parseInt(minuteInput.value);
-      if(isNaN(target) || target < 1 || target > 10) return;
-      settingsPopup.style.display = "none";
-      if(!animating) {
-        let start = timeOffsetMinutes;
-        let end = target;
-        let step = end > start ? 1 : -1;
-        animating = true;
-        function animate() {
-          if(start !== end) {
-            start += step;
-            timeOffsetMinutes = start;
-            updateClock();
-            setTimeout(animate, 500);
-          } else {
-            animating = false;
-            showSaveDot();
-          }
-        }
-        animate();
-      }
-    };
-    function showSaveDot() { saveDot.classList.add('active'); }
-    function hideSaveDot() { saveDot.classList.remove('active'); }
-    document.addEventListener('click', function(e) {
-      if(!settingsPopup.contains(e.target) && !settingsBtn.contains(e.target)) {
-        settingsPopup.style.display = "none";
-      }
-    });
-
-    let swipeStartX = null, swipeStartY = null;
-    document.body.addEventListener('touchstart', function(e) {
-      if(e.touches.length === 1) {
-        swipeStartX = e.touches[0].clientX;
-        swipeStartY = e.touches[0].clientY;
-      }
-    });
-    document.body.addEventListener('touchend', function(e) {
-      if(swipeStartX === null || swipeStartY === null) return;
-      let swipeEndX = e.changedTouches[0].clientX;
-      let swipeEndY = e.changedTouches[0].clientY;
-      let dx = swipeEndX - swipeStartX;
-      let dy = swipeEndY - swipeStartY;
-      if(Math.abs(dx) > 30 || Math.abs(dy) > 30) {
-        if(!animating && timeOffsetMinutes !== 0 && !swipeDelayTimer) {
-          let delaySec = 4 + Math.random();
-          swipeDelayTimer = setTimeout(()=>{
-            let start = timeOffsetMinutes;
-            let end = 0;
-            let step = (start > end) ? -1 : 1;
-            animating = true;
-            function animateBack() {
-              if(start !== end) {
-                start += step;
-                timeOffsetMinutes = start;
-                updateClock();
-                setTimeout(animateBack, 500);
-              } else {
-                animating = false;
-                swipeDelayTimer = null;
-                hideSaveDot();
-              }
-            }
-            animateBack();
-          }, delaySec * 1000);
-        }
-      }
-      swipeStartX = null;
-      swipeStartY = null;
-    });
-
-    document.getElementById('qrBtn').onclick = function(){
-      alert('QR Code action!');
-    };
-
-
-
-  </script>
-</body>
-</html>
+      let h = hours24 % 12 || 12;
