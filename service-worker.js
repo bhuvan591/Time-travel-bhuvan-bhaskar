@@ -1,43 +1,24 @@
-const CACHE_NAME = "magic-lockscreen-cache-v1";
-const urlsToCache = [
-  "/time-travel-bhuvan-bhaskar/",
-  "/time-travel-bhuvan-bhaskar/index.html",
-  "/time-travel-bhuvan-bhaskar/style.css",
-  "/time-travel-bhuvan-bhaskar/script.js",
-  "/time-travel-bhuvan-bhaskar/icon-192.png",
-  "/time-travel-bhuvan-bhaskar/icon-512.png",
-  "/time-travel-bhuvan-bhaskar/manifest.json"
+const CACHE_NAME = "magic-lockscreen-v1";
+const OFFLINE_URLS = [
+  "magic_real_lockscreen_superbig_time_blacktext_intex.html",
+  "magic_real_lockscreen_superbig_time_blacktext.html",
+  "icon-192.png",
+  "icon-512.png",
+  "manifest.json"
 ];
 
-// Install event → files cache में store होंगे
-self.addEventListener("install", (event) => {
+// Add fonts/images if you want them to be available offline
+
+self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(urlsToCache);
-    })
+    caches.open(CACHE_NAME).then(cache => cache.addAll(OFFLINE_URLS))
   );
 });
 
-// Fetch event → cache से serve, अगर ना मिले तो network से
-self.addEventListener("fetch", (event) => {
+self.addEventListener("fetch", event => {
   event.respondWith(
-    caches.match(event.request).then((response) => {
+    caches.match(event.request, {ignoreSearch:true}).then(response => {
       return response || fetch(event.request);
     })
-  );
-});
-
-// Activate event → पुराने cache delete
-self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) =>
-      Promise.all(
-        cacheNames.map((name) => {
-          if (name !== CACHE_NAME) {
-            return caches.delete(name);
-          }
-        })
-      )
-    )
   );
 });
