@@ -5,30 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Magic Real Lockscreen</title>
 
-  <!-- PWA Fullscreen Support -->
+  <!-- ✅ PWA Fullscreen Meta -->
   <meta name="theme-color" content="#ffffff" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Magic Lockscreen" />
   <link rel="apple-touch-icon" href="/icons/icon-192.png" />
-  <link rel="manifest" href="/manifest.webmanifest" />
 
-  <!-- Yaha aapka original CSS/JS links/code unchanged rahenge -->
+  <!-- ✅ Manifest inline (shortcut for GitHub Pages) -->
+  <link rel="manifest" href="data:application/manifest+json,{
+    &quot;name&quot;: &quot;Magic Real Lockscreen&quot;,
+    &quot;short_name&quot;: &quot;Lockscreen&quot;,
+    &quot;start_url&quot;: &quot;./&quot;,
+    &quot;scope&quot;: &quot;./&quot;,
+    &quot;display&quot;: &quot;standalone&quot;,
+    &quot;orientation&quot;: &quot;portrait&quot;,
+    &quot;background_color&quot;: &quot;#ffffff&quot;,
+    &quot;theme_color&quot;: &quot;#ffffff&quot;,
+    &quot;icons&quot;: [
+      {&quot;src&quot;:&quot;/icons/icon-192.png&quot;,&quot;sizes&quot;:&quot;192x192&quot;,&quot;type&quot;:&quot;image/png&quot;},
+      {&quot;src&quot;:&quot;/icons/icon-512.png&quot;,&quot;sizes&quot;:&quot;512x512&quot;,&quot;type&quot;:&quot;image/png&quot;,&quot;purpose&quot;:&quot;any maskable&quot;}
+    ]
+  }">
+
+  <!-- ✅ Aapka original CSS/JS yahaan unchanged rahega -->
 </head>
 <body>
 
-  <!-- Yaha aapka pura original content unchanged rahega -->
+  <!-- ✅ Yahan aapka pura original content unchanged rahega -->
 
-  <!-- Service Worker Registration -->
+  <!-- ✅ Service Worker inline (root scope) -->
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function () {
-        navigator.serviceWorker
-          .register("/sw.js")
-          .catch(function (err) {
-            console.warn("SW registration failed", err);
+        const swCode = `
+          const CACHE_NAME = "lockscreen-cache-v1";
+          const ASSETS = ["/", "/index.html"];
+          self.addEventListener("install", (e) => {
+            e.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS)));
+            self.skipWaiting();
           });
+          self.addEventListener("activate", (e) => {
+            e.waitUntil(caches.keys().then((keys) =>
+              Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
+            ));
+            self.clients.claim();
+          });
+          self.addEventListener("fetch", (e) => {
+            e.respondWith(caches.match(e.request).then((c) => c || fetch(e.request)));
+          });
+        `;
+        const blob = new Blob([swCode], { type: "application/javascript" });
+        const swUrl = URL.createObjectURL(blob);
+        navigator.serviceWorker.register(swUrl);
       });
     }
   </script>
