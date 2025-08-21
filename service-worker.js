@@ -1,34 +1,28 @@
-const CACHE_NAME = 'lockscreen-cache-v1';
-const urlsToCache = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/service-worker.js',
-  '/assets/bg.jpg',
-  '/assets/home.png',
-  '/assets/lock.png',
-  '/assets/qr.png',
-  '/assets/settings.png',
-  '/assets/icon-192.png',
-  '/assets/icon-512.png',
-  '/assets/roboto.css',
-  // Add font files if needed, e.g. '/assets/roboto.woff2'
+/* Simple offline-first service worker */
+const CACHE_VERSION = 'v1.0.0';
+const STATIC_CACHE = `static-${CACHE_VERSION}`;
+
+const ASSETS = [
+  './',
+  './index.html',
+  './manifest.json',
+  // icons
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/icon-192-maskable.png',
+  './icons/icon-512-maskable.png'
 ];
 
-self.addEventListener('install', function(event) {
+// Install: precache core assets
+self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(function(cache) {
-        return cache.addAll(urlsToCache);
-      })
+    caches.open(STATIC_CACHE).then(cache => cache.addAll(ASSETS))
   );
+  self.skipWaiting();
 });
 
-self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.match(event.request)
-      .then(function(response) {
-        return response || fetch(event.request);
-      })
-  );
-});
+// Activate: cleanup old caches
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.map(k => (k !== STATIC_CACHE ? caches.delete(k) : null)))
