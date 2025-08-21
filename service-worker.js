@@ -1,33 +1,34 @@
-const CACHE_NAME = "lockscreen-cache-v1";
-const FILES_TO_CACHE = [
-  "magic_real_lockscreen_superbig_time_blacktext.html",
-  "manifest.json",
-  "icon-192.png",
-  "icon-512.png"
-  // Fonts and remote images are not cached, but you can download and serve locally if needed
+const CACHE_NAME = 'lockscreen-cache-v1';
+const urlsToCache = [
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/service-worker.js',
+  '/assets/bg.jpg',
+  '/assets/home.png',
+  '/assets/lock.png',
+  '/assets/qr.png',
+  '/assets/settings.png',
+  '/assets/icon-192.png',
+  '/assets/icon-512.png',
+  '/assets/roboto.css',
+  // Add font files if needed, e.g. '/assets/roboto.woff2'
 ];
 
-self.addEventListener("install", event => {
+self.addEventListener('install', function(event) {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(FILES_TO_CACHE))
+    caches.open(CACHE_NAME)
+      .then(function(cache) {
+        return cache.addAll(urlsToCache);
+      })
   );
 });
 
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keyList =>
-      Promise.all(keyList.map(key => {
-        if (key !== CACHE_NAME) return caches.delete(key);
-      }))
-    )
-  );
-  self.clients.claim();
-});
-
-self.addEventListener("fetch", event => {
+self.addEventListener('fetch', function(event) {
   event.respondWith(
-    caches.match(event.request).then(response =>
-      response || fetch(event.request)
-    )
+    caches.match(event.request)
+      .then(function(response) {
+        return response || fetch(event.request);
+      })
   );
 });
