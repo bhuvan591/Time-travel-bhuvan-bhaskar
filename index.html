@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Magic Real Lockscreen</title>
 
-  <!-- PWA: Fullscreen / Standalone App -->
-  <meta name="theme-color" content="#16171a">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Magic Lockscreen">
-  <link rel="apple-touch-icon" href="/icons/icon-192.png">
-  <link rel="manifest" href="/manifest.webmanifest">
+  <!-- PWA Fullscreen Support -->
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Magic Lockscreen" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
 
-  <!-- Yaha aapka original CSS/JS includes rahenge -->
+  <!-- Yaha aapka original CSS/JS links/code unchanged rahenge -->
 </head>
 <body>
-  
-  <!-- Yaha aapka original content jaisa ka taisa rahega -->
 
-  <!-- PWA Service Worker Registration -->
+  <!-- Yaha aapka pura original content unchanged rahega -->
+
+  <!-- Service Worker Registration -->
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/sw.js').catch(function(e){
-          console.warn('SW registration failed', e);
-        });
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker
+          .register("/sw.js")
+          .catch(function (err) {
+            console.warn("SW registration failed", err);
+          });
       });
     }
   </script>
