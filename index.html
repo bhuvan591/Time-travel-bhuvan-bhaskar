@@ -4,23 +4,25 @@
   <meta charset="UTF-8">
   <title>Magic Real Lockscreen</title>
   <meta name="viewport" content="width=320, initial-scale=1.0, user-scalable=no">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:500,400&display=swap" rel="stylesheet">
-  <!-- Manifest for PWA -->
+  <meta name="theme-color" content="#16171a"/>
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#16171a">
-  <link rel="icon" type="image/png" href="icon-192.png">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="assets/roboto.css">
   <style>
-    /* ... (aapka pura CSS yahan as-is rahega) ... */
     body {
       margin: 0;
       height: 100vh;
       width: 100vw;
       font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
       overflow: hidden;
-      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80') center center / cover no-repeat;
+      background: url('assets/bg.jpg') center center / cover no-repeat;
       background-color: #16171a;
     }
-    /* baaki CSS as-is */
+    /* --- rest of your CSS exactly as before --- */
+    /* [PASTE the entire CSS from your original file here, no changes] */
     /* ... */
   </style>
 </head>
@@ -29,7 +31,7 @@
   <div class="save-indicator-dot" id="saveDot"></div>
   <!-- Settings button for minute control -->
   <div class="settings-btn" id="settingsBtn" title="Minute select karein">
-    <img class="settings-icon" src="https://cdn-icons-png.flaticon.com/512/2099/2099058.png"/>
+    <img class="settings-icon" src="assets/settings.png"/>
   </div>
   <div class="settings-popup" id="settingsPopup" style="display:none;">
     <span style="font-size:1.15rem;">Minute select karein (1-10):</span>
@@ -48,24 +50,19 @@
   </div>
   <div class="bottom-icons">
     <div class="icon-btn icon-home" title="Home">
-      <img class="icon-img" src="https://cdn-icons-png.flaticon.com/512/25/25694.png"/>
+      <img class="icon-img" src="assets/home.png"/>
     </div>
     <div class="icon-btn icon-lock" title="Locked">
-      <img class="icon-img" src="https://cdn-icons-png.flaticon.com/512/2889/2889676.png"/>
+      <img class="icon-img" src="assets/lock.png"/>
     </div>
     <div class="icon-btn icon-qr" id="qrBtn" title="QR Code">
-      <img class="icon-img" src="https://cdn-icons-png.flaticon.com/512/929/929426.png"/>
+      <img class="icon-img" src="assets/qr.png"/>
     </div>
   </div>
   <div class="swipe-text">Swipe to unlock</div>
   <script>
-    // Service worker registration for PWA/offline
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('sw.js');
-      });
-    }
-
+    // --- Your JS exactly as original ---
+    // [PASTE the entire JS from your original file here, no changes]
     function pad(n){ return n.toString().padStart(2,'0'); }
     let timeOffsetMinutes = 0;
     let animating = false;
@@ -180,6 +177,13 @@
     document.getElementById('qrBtn').onclick = function(){
       alert('QR Code action!');
     };
+
+    // Register Service Worker for offline/PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('service-worker.js');
+      });
+    }
   </script>
 </body>
 </html>
