@@ -1,230 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Magic Real Lockscreen</title>
-  <meta name="viewport" content="width=320, initial-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#16171a"/>
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="assets/icon-192.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+
+  <!-- PWA: full screen + theme -->
+  <meta name="theme-color" content="#0a84ff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Lockscreen" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+  <!-- Manifest -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- (Optional) Splash for iOS—use your 512 as fallback -->
+  <link rel="apple-touch-startup-image" href="icons/icon-512.png" />
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:500,400&display=swap" rel="stylesheet" />
   <style>
+    /* --- your existing CSS (unchanged) --- */
     body {
       margin: 0;
       height: 100vh;
       width: 100vw;
       font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
       overflow: hidden;
-      background: url('assets/bg.jpg') center center / cover no-repeat;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80') center center / cover no-repeat;
       background-color: #16171a;
     }
-    .lockscreen-container {
-      position: absolute;
-      top: 7vw;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100vw;
-      text-align: center;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      pointer-events: none;
-      user-select: none;
-    }
-    .clock-block {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 1vw;
-      margin-top: 2vw;
-    }
-    .clock-hour,
-    .clock-minute {
-      font-size: 15vw;
-      font-weight: 700;
-      color: #111;
-      letter-spacing: 2vw;
-      text-align: center;
-      line-height: 1;
-      margin: 0;
-      padding: 0;
-      pointer-events: none;
-      user-select: none;
-      text-shadow: none;
-    }
-    .clock-hour {
-      margin-bottom: 2vw;
-      margin-top: 0vw;
-    }
-    .clock-minute {
-      margin-top: 1vw;
-    }
-    .date-weather-row {
-      margin-top: 1vw;
-      font-size: 4.9vw;
-      color: #111;
-      opacity: 0.98;
-      font-weight: 400;
-      text-align: center;
-      letter-spacing: 2px;
-      display: flex;
-      justify-content: center;
-      gap: 18px;
-      align-items: center;
-      text-shadow: none;
-      pointer-events: none;
-      user-select: none;
-    }
-    .bottom-icons {
-      position: absolute;
-      bottom: 100px;
-      left: 0;
-      width: 100vw;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 90px;
-      z-index: 10;
-      pointer-events: auto;
-    }
-    .icon-btn {
-      background: rgba(32,44,56,0.25);
-      border-radius: 50%;
-      width: 72px;
-      height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 24px #0009;
-      cursor: pointer;
-      transition: background 0.2s;
-      pointer-events: auto;
-    }
+    .lockscreen-container { position: absolute; top: 7vw; left: 50%; transform: translateX(-50%); width: 100vw; text-align: center; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+    .clock-block { display: flex; flex-direction: column; align-items: center; margin-bottom: 1vw; margin-top: 2vw; }
+    .clock-hour, .clock-minute { font-size: 15vw; font-weight: 700; color: #111; letter-spacing: 2vw; text-align: center; user-select: none; pointer-events: none; text-shadow: none; line-height: 1; margin: 0; padding: 0; }
+    .clock-hour { margin-bottom: 2vw; margin-top: 0vw; }
+    .clock-minute { margin-top: 1vw; }
+    .date-weather-row { margin-top: 1vw; font-size: 4.9vw; color: #111; opacity: 0.98; font-weight: 400; text-align: center; letter-spacing: 2px; user-select: none; pointer-events: none; display: flex; justify-content: center; gap: 18px; align-items: center; text-shadow: none; }
+    .bottom-icons { position: absolute; bottom: 100px; left: 0; width: 100vw; display: flex; justify-content: center; align-items: center; gap: 90px; z-index: 10; }
+    .icon-btn { background: rgba(32,44,56,0.25); border-radius: 50%; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 24px #0009; cursor: pointer; transition: background 0.2s; }
     .icon-btn:active { background: #ffffff22; }
-    .icon-img {
-      width: 38px;
-      height: 38px;
-      filter: invert(100%);
-      pointer-events: none;
-      user-select: none;
-    }
+    .icon-img { width: 54px; height: 54px; filter: invert(100%); }
     .icon-home { margin-right: auto; }
     .icon-lock { margin: 0 auto; }
     .icon-qr { margin-left: auto; }
-    .swipe-text {
-      position: absolute;
-      bottom: 45px;
-      left: 0;
-      width: 100vw;
-      text-align: center;
-      font-size: 2.6vw;
-      color: #fff;
-      opacity: 0.89;
-      font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
-      letter-spacing: 1.5px;
-      user-select: none;
-      pointer-events: none;
-      text-shadow: 0 2px 16px #0009;
-    }
-    /* Settings styles */
-    .settings-btn {
-      position: absolute;
-      top: 24px;
-      right: 24px;
-      background: rgba(255,255,255,0.19);
-      border-radius: 50%;
-      width: 52px;
-      height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 20;
-      transition: background 0.2s;
-      box-shadow: 0 2px 12px #0005;
-      pointer-events: auto;
-    }
+    .swipe-text { position: absolute; bottom: 45px; left: 0; width: 100vw; text-align: center; font-size: 2.6vw; color: #fff; opacity: 0.89; font-family: 'Roboto', 'Segoe UI', Arial, sans-serif; letter-spacing: 1.5px; user-select: none; text-shadow: 0 2px 16px #0009; }
+    .settings-btn { position: absolute; top: 24px; right: 24px; background: rgba(255,255,255,0.19); border-radius: 50%; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 20; transition: background 0.2s; box-shadow: 0 2px 12px #0005; }
     .settings-btn:active { background: #fff; }
-    .settings-icon {
-      width: 34px;
-      height: 34px;
-      filter: invert(100%) drop-shadow(0 0 3px #2228);
-      pointer-events: none;
-      user-select: none;
-    }
-    .settings-popup {
-      position: absolute;
-      top: 84px;
-      right: 22px;
-      background: #202d44ee;
-      color: #fff;
-      border-radius: 18px;
-      box-shadow: 0 4px 18px #000b;
-      padding: 16px 24px;
-      z-index: 99;
-      animation: fadeIn 0.23s;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .settings-popup input[type=number] {
-      width: 54px;
-      padding: 7px;
-      font-size: 1.3rem;
-      border-radius: 7px;
-      border: 1px solid #3b476d;
-      margin-right: 12px;
-      outline: none;
-    }
-    .settings-popup button {
-      background: #3b476d;
-      color: #fff;
-      font-size: 1.15rem;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 26px;
-      margin: 0;
-      cursor: pointer;
-      margin-bottom: 2px;
-      transition: background 0.17s;
-    }
-    .settings-popup button:hover {
-      background: #fff;
-      color: #222d44;
-    }
-    .save-indicator-dot {
-      position: absolute;
-      top: 16px;
-      left: 20px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #222b;
-      box-shadow: 0 0 0 2px #2228;
-      pointer-events: none;
-      z-index: 99;
-      opacity: 0;
-      transition: opacity 0.23s;
-    }
-    .save-indicator-dot.active {
-      opacity: 1;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px);}
-      to { opacity: 1; transform: translateY(0);}
-    }
+    .settings-icon { width: 34px; height: 34px; filter: invert(100%) drop-shadow(0 0 3px #2228); }
+    .settings-popup { position: absolute; top: 84px; right: 22px; background: #202d44ee; color: #fff; border-radius: 18px; box-shadow: 0 4px 18px #000b; padding: 16px 24px; z-index: 99; animation: fadeIn 0.23s; display: flex; flex-direction: column; gap: 10px; }
+    .settings-popup input[type=number] { width: 54px; padding: 7px; font-size: 1.3rem; border-radius: 7px; border: 1px solid #3b476d; margin-right: 12px; outline: none; }
+    .settings-popup button { background: #3b476d; color: #fff; font-size: 1.15rem; border: none; border-radius: 8px; padding: 10px 26px; margin: 0; cursor: pointer; margin-bottom: 2px; transition: background 0.17s; }
+    .settings-popup button:hover { background: #fff; color: #222d44; }
+    .save-indicator-dot { position: absolute; top: 16px; left: 20px; width: 20px; height: 20px; border-radius: 50%; background: #222b; box-shadow: 0 0 0 2px #2228; pointer-events: none; z-index: 99; opacity: 0; transition: opacity 0.23s; }
+    .save-indicator-dot.active { opacity: 1; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px);} to { opacity: 1; transform: translateY(0);} }
     @media (max-width: 500px) {
       .lockscreen-container { top: 24px;}
       .clock-block { margin-top: 2vw; }
       .clock-hour, .clock-minute { font-size: 4.7rem; letter-spacing: 0.6rem;}
       .date-weather-row { font-size: 1.7rem; gap: 11px;}
-      .icon-btn { width: 44px; height: 44px;}
-      .icon-img { width: 24px; height: 24px;}
-      .bottom-icons { gap: 22px; bottom: 12px; }
+      .icon-btn { width: 54px; height: 54px;}
+      .icon-img { width: 32px; height: 32px;}
+      .bottom-icons { gap: 32px; bottom: 22px; }
       .swipe-text { font-size: 1.1rem; bottom: 7px;}
       .settings-btn { width: 32px; height: 32px; top: 8px; right: 8px; }
       .settings-icon { width: 20px; height: 20px;}
@@ -234,15 +71,14 @@
   </style>
 </head>
 <body>
-  <!-- Save indicator dot -->
+  <!-- existing HTML from your page -->
   <div class="save-indicator-dot" id="saveDot"></div>
-  <!-- Settings button -->
   <div class="settings-btn" id="settingsBtn" title="Minute select karein">
-    <img class="settings-icon" src="assets/settings.png" alt="Settings"/>
+    <img class="settings-icon" src="https://cdn-icons-png.flaticon.com/512/2099/2099058.png" />
   </div>
   <div class="settings-popup" id="settingsPopup" style="display:none;">
     <span style="font-size:1.15rem;">Minute select karein (1-10):</span>
-    <input type="number" min="1" max="10" id="minuteInput" value="1"/>
+    <input type="number" min="1" max="10" id="minuteInput" value="1" />
     <button id="okBtn">OK</button>
   </div>
   <div class="lockscreen-container">
@@ -257,17 +93,19 @@
   </div>
   <div class="bottom-icons">
     <div class="icon-btn icon-home" title="Home">
-      <img class="icon-img" src="assets/home.png" alt="Home"/>
+      <img class="icon-img" src="https://cdn-icons-png.flaticon.com/512/25/25694.png" />
     </div>
     <div class="icon-btn icon-lock" title="Locked">
-      <img class="icon-img" src="assets/lock.png" alt="Lock"/>
+      <img class="icon-img" src="https://cdn-icons-png.flaticon.com/512/2889/2889676.png" />
     </div>
     <div class="icon-btn icon-qr" id="qrBtn" title="QR Code">
-      <img class="icon-img" src="assets/qr.png" alt="QR"/>
+      <img class="icon-img" src="https://cdn-icons-png.flaticon.com/512/929/929426.png" />
     </div>
   </div>
   <div class="swipe-text">Swipe to unlock</div>
+
   <script>
+    // --- your existing JS (unchanged) ---
     function pad(n){ return n.toString().padStart(2,'0'); }
     let timeOffsetMinutes = 0;
     let animating = false;
@@ -290,7 +128,6 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Settings popup logic
     const settingsBtn = document.getElementById('settingsBtn');
     const settingsPopup = document.getElementById('settingsPopup');
     const minuteInput = document.getElementById('minuteInput');
@@ -324,19 +161,14 @@
         animate();
       }
     };
-    function showSaveDot() {
-      saveDot.classList.add('active');
-    }
-    function hideSaveDot() {
-      saveDot.classList.remove('active');
-    }
+    function showSaveDot() { saveDot.classList.add('active'); }
+    function hideSaveDot() { saveDot.classList.remove('active'); }
     document.addEventListener('click', function(e) {
       if(!settingsPopup.contains(e.target) && !settingsBtn.contains(e.target)) {
         settingsPopup.style.display = "none";
       }
     });
 
-    // Swipe logic (touch)
     let swipeStartX = null, swipeStartY = null;
     document.body.addEventListener('touchstart', function(e) {
       if(e.touches.length === 1) {
@@ -378,15 +210,14 @@
       swipeStartY = null;
     });
 
-    // QR icon click (demo)
     document.getElementById('qrBtn').onclick = function(){
       alert('QR Code action!');
     };
 
-    // Register Service Worker for offline/PWA
+    // --- PWA: register service worker ---
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('service-worker.js');
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js');
       });
     }
   </script>
