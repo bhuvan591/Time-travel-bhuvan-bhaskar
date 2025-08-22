@@ -2,7 +2,7 @@
   "name": "Magic Real Lockscreen App",
   "short_name": "MagicLockscreen",
   "start_url": ".",
-  "display": "standalone",
+  "display": "fullscreen",
   "background_color": "#16171a",
   "theme_color": "#16171a",
   "description": "Lockscreen with magic features, now installable!",
