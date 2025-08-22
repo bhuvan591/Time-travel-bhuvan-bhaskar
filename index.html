@@ -3,23 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <title>Magic Real Lockscreen</title>
-  <meta name="viewport" content="width=320, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=320, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#16171a">
   <link href="https://fonts.googleapis.com/css?family=Roboto:500,400&display=swap" rel="stylesheet">
   <style>
-    body {
+    html, body {
       margin: 0;
-      height: 100vh;
+      padding: 0;
       width: 100vw;
-      font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+      height: 100vh;
       overflow: hidden;
-      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80') center center / cover no-repeat;
-      background-color: #16171a;
+      background: #16171a;
+    }
+    /* Use an actual <img> for background to ensure it covers notch/cutout area */
+    #bgimg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      object-fit: cover;
+      z-index: 0;
+      pointer-events: none;
+      user-select: none;
     }
     .lockscreen-container {
       position: absolute;
-      top: 12vw; /* original: 7vw, ab thoda niche */
+      top: 12vw;
       left: 50%;
       transform: translateX(-50%);
       width: 100vw;
@@ -116,7 +125,6 @@
       user-select: none;
       text-shadow: 0 2px 16px #0009;
     }
-    /* Settings styles */
     .settings-btn {
       position: absolute;
       top: 24px;
@@ -212,9 +220,9 @@
   </style>
 </head>
 <body>
-  <!-- Black dot indicator (left side) -->
+  <!-- Actual background image covers everything, including notch/cutout area -->
+  <img id="bgimg" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80" alt="Lockscreen Bg"/>
   <div class="save-indicator-dot" id="saveDot"></div>
-  <!-- Settings button for minute control -->
   <div class="settings-btn" id="settingsBtn" title="Minute select karein">
     <img class="settings-icon" src="https://cdn-icons-png.flaticon.com/512/2099/2099058.png"/>
   </div>
