@@ -1,66 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="hi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Magic Real Lockscreen</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Magic Real Lockscreen - Launcher</title>
 
-  <!-- ✅ PWA Fullscreen Meta -->
-  <meta name="theme-color" content="#ffffff" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Magic Lockscreen" />
-  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <!-- Make iOS open as full screen when "Add to Home Screen" -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MagicLock">
 
-  <!-- ✅ Manifest inline (shortcut for GitHub Pages) -->
-  <link rel="manifest" href="data:application/manifest+json,{
-    &quot;name&quot;: &quot;Magic Real Lockscreen&quot;,
-    &quot;short_name&quot;: &quot;Lockscreen&quot;,
-    &quot;start_url&quot;: &quot;./&quot;,
-    &quot;scope&quot;: &quot;./&quot;,
-    &quot;display&quot;: &quot;standalone&quot;,
-    &quot;orientation&quot;: &quot;portrait&quot;,
-    &quot;background_color&quot;: &quot;#ffffff&quot;,
-    &quot;theme_color&quot;: &quot;#ffffff&quot;,
-    &quot;icons&quot;: [
-      {&quot;src&quot;:&quot;/icons/icon-192.png&quot;,&quot;sizes&quot;:&quot;192x192&quot;,&quot;type&quot;:&quot;image/png&quot;},
-      {&quot;src&quot;:&quot;/icons/icon-512.png&quot;,&quot;sizes&quot;:&quot;512x512&quot;,&quot;type&quot;:&quot;image/png&quot;,&quot;purpose&quot;:&quot;any maskable&quot;}
-    ]
-  }">
+  <!-- Manifest for Android/Chrome -->
+  <link rel="manifest" href="manifest.json">
 
-  <!-- ✅ Aapka original CSS/JS yahaan unchanged rahega -->
+  <!-- Touch icon for iOS -->
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <!-- theme color -->
+  <meta name="theme-color" content="#16171a">
+
+  <style>
+    html,body { height:100%; margin:0; background:#000; }
+    /* fullscreen iframe */
+    #appFrame {
+      position:fixed;
+      inset:0; /* top:0;right:0;bottom:0;left:0; */
+      width:100%;
+      height:100%;
+      border:0;
+      margin:0;
+      padding:0;
+      overflow:hidden;
+      background:#000;
+    }
+
+    /* small fallback if iframe blocked */
+    .fallback {
+      color:#fff;
+      font-family: sans-serif;
+      display:none;
+      padding:20px;
+      text-align:center;
+    }
+
+    /* hide scrollbars etc */
+    body, iframe { -webkit-overflow-scrolling: touch; }
+  </style>
 </head>
 <body>
+  <!-- iframe loads your original file (do not change original file name) -->
+  <iframe id="appFrame" src="magic_real_lockscreen_superbig_time_blacktext.html" allowfullscreen sandbox="allow-same-origin allow-scripts allow-forms allow-pointer-lock"></iframe>
 
-  <!-- ✅ Yahan aapka pura original content unchanged rahega -->
+  <div class="fallback" id="fallback">
+    <h2>Unable to display fullscreen. <br/>Open <a href="magic_real_lockscreen_superbig_time_blacktext.html">here</a></h2>
+    <p>If you see this, your browser may block iframes. Open the file directly.</p>
+  </div>
 
-  <!-- ✅ Service Worker inline (root scope) -->
   <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", function () {
-        const swCode = `
-          const CACHE_NAME = "lockscreen-cache-v1";
-          const ASSETS = ["/", "/index.html"];
-          self.addEventListener("install", (e) => {
-            e.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS)));
-            self.skipWaiting();
-          });
-          self.addEventListener("activate", (e) => {
-            e.waitUntil(caches.keys().then((keys) =>
-              Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
-            ));
-            self.clients.claim();
-          });
-          self.addEventListener("fetch", (e) => {
-            e.respondWith(caches.match(e.request).then((c) => c || fetch(e.request)));
-          });
-        `;
-        const blob = new Blob([swCode], { type: "application/javascript" });
-        const swUrl = URL.createObjectURL(blob);
-        navigator.serviceWorker.register(swUrl);
+    // Basic check: if iframe fails to load (e.g. blocked), show fallback
+    const frame = document.getElementById('appFrame');
+    frame.addEventListener('error', ()=> {
+      document.getElementById('fallback').style.display = 'block';
+      frame.style.display = 'none';
+    });
+
+    // Register service worker (optional but helps make page installable / offline)
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(function(err){
+        // registration failed
+        console.warn('SW registration failed:', err);
       });
     }
+
+    // For some iOS versions, hiding the status bar works better if we call this
+    // (no-op in most browsers)
+    window.addEventListener('load', () => {
+      // nothing required — presence of meta tags + manifest is main thing
+    });
   </script>
 </body>
 </html>
