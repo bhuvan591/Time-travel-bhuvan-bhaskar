@@ -1,20 +1,18 @@
 {
   "name": "Magic Real Lockscreen",
-  "short_name": "MagicLock",
-  "description": "Magic Real Lockscreen as fullscreen PWA",
+  "short_name": "Lockscreen",
   "start_url": "index.html",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#16171a",
   "theme_color": "#16171a",
   "icons": [
     {
-      "src": "icons/icon-192.png",
+      "src": "icon.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icons/icon-512.png",
+      "src": "icon.png",
       "sizes": "512x512",
       "type": "image/png"
     }
