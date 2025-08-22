@@ -16,7 +16,7 @@
       overflow: hidden;
       background: #16171a;
     }
-    /* Use an actual <img> for background to ensure it covers notch/cutout area */
+    /* Background image covers notch/cutout area */
     #bgimg {
       position: fixed;
       top: 0; left: 0;
@@ -189,7 +189,7 @@
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background: #222b; /* light black */
+      background: #222b;
       box-shadow: 0 0 0 2px #2228;
       pointer-events: none;
       z-index: 99;
@@ -220,7 +220,7 @@
   </style>
 </head>
 <body>
-  <!-- Actual background image covers everything, including notch/cutout area -->
+  <!-- Background image covers everything, including notch/cutout area -->
   <img id="bgimg" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80" alt="Lockscreen Bg"/>
   <div class="save-indicator-dot" id="saveDot"></div>
   <div class="settings-btn" id="settingsBtn" title="Minute select karein">
@@ -262,7 +262,7 @@
       const now = new Date();
       let showTime = new Date(now.getTime() + timeOffsetMinutes * 60000);
       let hours24 = showTime.getHours();
-      let h = hours24 % 12 || 12; // 12-hour format
+      let h = hours24 % 12 || 12;
       let m = pad(showTime.getMinutes());
       document.getElementById('clockHour').textContent = pad(h);
       document.getElementById('clockMinute').textContent = m;
